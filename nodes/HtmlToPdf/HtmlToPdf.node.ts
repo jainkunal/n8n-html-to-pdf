@@ -4,7 +4,7 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 } from 'n8n-workflow';
-import puppeteer from 'puppeteer';
+import puppeteer, { PaperFormat } from 'puppeteer';
 
 export class HtmlToPdf implements INodeType {
 	description: INodeTypeDescription = {
@@ -114,7 +114,7 @@ export class HtmlToPdf implements INodeType {
 				};
 
 				const browser = await puppeteer.launch({
-					headless: 'new',
+					headless: true,
 				});
 				const page = await browser.newPage();
 				await page.setContent(htmlContent);
@@ -132,7 +132,7 @@ export class HtmlToPdf implements INodeType {
 				}
 
 				const pdfBuffer = await page.pdf({
-					format: pdfOptions.format || 'A4',
+					format: (pdfOptions.format || 'A4') as PaperFormat,
 					landscape: pdfOptions.landscape || false,
 					margin: pdfOptions.margin
 						? {
